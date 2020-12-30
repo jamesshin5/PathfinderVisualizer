@@ -1,0 +1,15 @@
+.grid-container {
+    margin: 2% auto;
+}
+  
+.grid {
+    white-space: pre;
+}
+
+button {
+    margin: 0.2vw;
+}
+
+
+@import '~bootstrap/dist/css/bootstrap.css';
+
