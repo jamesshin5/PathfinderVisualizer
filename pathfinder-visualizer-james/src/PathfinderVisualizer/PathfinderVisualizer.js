@@ -26,6 +26,7 @@ export default class PathfindingVisualizer extends React.Component {
             isWallNode: false, 
             currRow: 0,
             currCol: 0,
+            speed: 1,
         }
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseLeave = this.handleMouseLeave.bind(this);
@@ -267,6 +268,18 @@ export default class PathfindingVisualizer extends React.Component {
         }
     }
 
+    switchSpeed() {
+        if (!this.state.isRunning) {
+            if (this.state.speed === 1) {
+                this.setState({speed: 5});
+            } else if (this.state.speed === 5) {
+                this.setState({speed: 10});
+            } else {
+                this.setState({speed: 1})
+            }
+        }
+    }
+
     visualize(algo) {
         if (!this.state.isRunning) {
             this.clearGrid();
@@ -305,7 +318,7 @@ export default class PathfindingVisualizer extends React.Component {
             if (i === visitedNodesInOrder.length) {
                 setTimeout(()=> {
                     this.animateShortestPath(nodesInShortestPathInOrder);
-                }, 10 * i);
+                }, 30 * this.state.speed * i);
                 return;
             }
             setTimeout(()=> {
@@ -319,7 +332,7 @@ export default class PathfindingVisualizer extends React.Component {
                 ) {
                     document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited'
                 }
-            }, 10 * i)
+            }, 30 * this.state.speed  * i)
         }
     }
 
@@ -328,7 +341,7 @@ export default class PathfindingVisualizer extends React.Component {
             if (nodesInShortestPathInOrder[i] === 'end') {
                 setTimeout(()=> {
                     this.toggleRunning();
-                }, i * 50)
+                }, i * this.state.speed * 50)
             } else {
                 setTimeout(()=> {
                     const node = nodesInShortestPathInOrder[i];
@@ -341,7 +354,7 @@ export default class PathfindingVisualizer extends React.Component {
                     ) {
                         document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-shortest-path';
                     }
-                }, i * 40)
+                }, i * this.state.speed  * 30)
             }
         }
     }
@@ -355,48 +368,57 @@ export default class PathfindingVisualizer extends React.Component {
                         PATHFINDER <b>VISUALIZER</b>
                     </a>
                     <div className='ml-auto'>
-                    <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={() => this.clearGrid()}>
-                    Clear Grid
-                    </button>
-                    <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => this.clearWalls()}>
-                    Clear Walls
-                    </button>
-                    <button
-                    type="button"
-                    className="btn btn-info"
-                    onClick={() => this.visualize('Dijkstra')}>
-                    Dijkstra's
-                    </button>
-                    <button
-                    type="button"
-                    className="btn btn-info"
-                    onClick={() => this.visualize('AStar')}>
-                    A*
-                    </button>
-                    <button
-                    type="button"
-                    className="btn btn-info"
-                    onClick={() => this.visualize('Greedy')}>
-                    Greedy
-                    </button>
-                    <button
-                    type="button"
-                    className="btn btn-info"
-                    onClick={() => this.visualize('BFS')}>
-                    Bread First Search
-                    </button>
-                    <button
-                    type="button"
-                    className="btn btn-info"
-                    onClick={() => this.visualize('DFS')}>
-                    Depth First Search
-                    </button>
+                        <button
+                        type="button"
+                        className="btn btn-warning"
+                        onClick={() => this.switchSpeed()}>
+                        {this.state.speed === 1 ? "Fast"
+                        : this.state.speed === 5 ? "Regular"
+                        : this.state.speed === 10 ? "Slow"
+                        : "Fast"}
+                        </button>
+                        <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={() => this.clearGrid()}>
+                        Clear Grid
+                        </button>
+                        <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={() => this.clearWalls()}>
+                        Clear Walls
+                        </button>
+                        <button
+                        type="button"
+                        className="btn btn-info"
+                        onClick={() => this.visualize('Dijkstra')}>
+                        Dijkstra's
+                        </button>
+                        <button
+                        type="button"
+                        className="btn btn-info"
+                        onClick={() => this.visualize('AStar')}>
+                        A*
+                        </button>
+                        <button
+                        type="button"
+                        className="btn btn-info"
+                        onClick={() => this.visualize('Greedy')}>
+                        Greedy
+                        </button>
+                        <button
+                        type="button"
+                        className="btn btn-info"
+                        onClick={() => this.visualize('BFS')}>
+                        Bread First Search
+                        </button>
+                        <button
+                        type="button"
+                        className="btn btn-info"
+                        onClick={() => this.visualize('DFS')}>
+                        Depth First Search
+                        </button>
                     </div>
                 </nav>
                 <table
