@@ -9,7 +9,6 @@ export function DFS(grid, startNode, finishNode) {
 
         const currNode = nodeStack.pop();
         if (currNode === finishNode) {
-            console.log(visitedNodesInOrder)
             return visitedNodesInOrder;
         }
         if (!currNode.isWall && (currNode.isStart || !currNode.isVisited)) {
